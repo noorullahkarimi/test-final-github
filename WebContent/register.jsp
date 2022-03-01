@@ -13,18 +13,29 @@
 <body>
 <div class="content-all">
 <form action="login" method="GET">
-<input name="debug" type="hidden" value="login">
+<input name="debug" type="hidden" value="register">
 <label>please inter your username</label><br>
-<input name="username" ><br>
+<input name="username" type="text"><br>
 <label>please inter your password</label><br>
-<input name="password" type="password"><br><br>
-<input type="submit" value="login" ><br><br>
-</form>
-<form action="login" method="get">
-<input name="debug" type="hidden" value="switchregister">
-<input type="submit" value="do you have an account?" >
+<input name="password" type="password"><br>
+
+<label>please inter your zipcode</label><br>
+<input name="zipcode" type="number"><br>
+<label>please inter your address</label><br>
+<input name="address" type="text"><br>
+
+<label>please inter your email</label><br>
+<input name="email"type="text"><br>
+<label>please inter your phone number</label><br>
+<input name="phonenumber" type="number"><br>
+<input type="submit" value="register" >
 </form>
 
+
+<form action="login" method="get">
+<input name="debug" type="hidden" value="switchlogin">
+<input type="submit" value="you haven't an account?" >
+</form>
 </div>
 </body>
 </html>

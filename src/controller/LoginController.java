@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +16,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+import connector.DaoInterface;
+import connector.DaoInterfaceImpl;
 import connector.Db;
 import entity.Address;
 import entity.Member;
@@ -63,77 +66,76 @@ public class LoginController extends HttpServlet {
 
 	}
 
-	public static Object run(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public static Object run(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		// it is a router for the proccess request
 		System.out.println("------------------>" + request.getParameter("debug"));
 		switch (request.getParameter("debug")) {
 		case "login":
 			try {
+				DaoInterface d = new DaoInterfaceImpl();
 
-				Member m = new Member();
-				m.setPassword(request.getParameter("password"));
-				m.setUsername(request.getParameter("username"));
-
-				Address addre = new Address();
-				addre.setAddress("esfahan-tehran");
-				addre.setEmail("s@gmail.com");
-				addre.setPhoneNumber(132978);
-				addre.setZipcode(212818616);
-				m.getAddress().add(addre);
-
-				Db.insert(m);
-////				Db.insert(addre);
+//				Member m = new Member();
+//				String user= request.getParameter("username").toString();
+//				String pass = request.getParameter("password").toString();
+//			
+//				Boolean result = Db.select(user,pass);
 				
+				d.choose(request);
 				
-//				
-//				 System.out.println("=========111==========================");
-//				 SessionFactory sf = new
-//				 Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
-//				 System.out.println("===========222========================");
-//				 Session session = sf.openSession();
-////				GetSession gs = new GetSession();
-////				Session session = gs.getSession();
-////				System.out.println("=============333======================");
-////				System.out.println(session.isOpen());
-////				System.out.println("=============333======================");
-//				Transaction tx = session.beginTransaction();
-//				System.out.println("===========444========================");
-//
-//				session.save(m);
-////				session.save(addre);
-//				tx.commit();
-//				session.close();
+				String script = "hello world !";
 				
+				response.setContentType("text/html;charset=UTF-8");
+		        response.setCharacterEncoding("utf-8");
+		        response.setHeader("Content-Type", "text/html;charset=UTF-8");
+		        PrintWriter out = response.getWriter();
+		        out.print(script);
+		        out.close();
+		        out.flush();
 				
-				
-				
-				
-				
-				 
-//				StringBuilder script = new StringBuilder();
-//				script.append(
-//						"`<div style='positon:absolute;top:0;right:0;width:20%;height:10vh;'>this is the right </div>`");
-
-//				response.setContentType("text/html;charset=UTF-8");
-//				response.setCharacterEncoding("utf-8");
-//				response.setHeader("Content-Type", "text/html;charset=UTF-8");
-//				PrintWriter out = response.getWriter();
-//				out.print(script);
-//				out.close();
-//				out.flush();
-
 			} catch (Exception e) {
 				e.fillInStackTrace();
 			}
 			break;
+		case "switchregister":
+			RequestDispatcher requestDispatcher; 
+			requestDispatcher = request.getRequestDispatcher("register.jsp");
+			requestDispatcher.forward(request, response);
+			break;
+		case "switchlogin":
+			RequestDispatcher requestDispatcherLogin; 
+			requestDispatcherLogin = request.getRequestDispatcher("login.jsp");
+			requestDispatcherLogin.forward(request, response);
+			break;
 		case "register":
-			System.out.print("register");
+			try {
+				DaoInterface dao = new DaoInterfaceImpl();
+
+//				Member m = new Member();
+//				m.setPassword(request.getParameter("password"));
+//				m.setUsername(request.getParameter("username"));
+//
+//				Address addre = new Address();
+//				addre.setAddress(request.getParameter("address"));
+//				addre.setEmail(request.getParameter("email"));
+//				
+//				addre.setPhoneNumber(Integer.parseInt(request.getParameter("phonenumber")));
+//				addre.setZipcode(Integer.parseInt(request.getParameter("zipcode")));
+//				
+//				m.getAddress().add(addre);
+//
+//				Db.insert(m);
+				System.out.println("coming to register");
+				dao.add(request);
+				response.sendRedirect("register.jsp");
+			} catch (Exception e) {
+				e.fillInStackTrace();
+			}
 			break;
 		default:
 			break;
 		}
 
-		response.sendRedirect("login.jsp");
+//		response.sendRedirect("login.jsp");
 		return response;
 	}
 
